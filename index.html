@@ -60,148 +60,495 @@
       box-sizing: border-box;
     }
 
-    body {
-      background: linear-gradient(145deg, #f5f7fc 0%, #e9eef4 100%);
-      font-family: 'Segoe UI', 'Poppins', 'Roboto', system-ui, -apple-system, 'BlinkMacSystemFont', sans-serif;
-      padding: 20px;
-      color: #1a2c3e;
-    }
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Maswali 20 ya Approximation | Majibu Yafichwa + Sauti Bonyezani</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-    }
+        body {
+            background: #eef2f9;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            padding: 30px 16px;
+        }
 
-    .hero {
-      background: #0b2b3b;
-      background-image: radial-gradient(circle at 10% 30%, #1c4e6e, #06212e);
-      border-radius: 2rem;
-      padding: 1.8rem 2rem;
-      margin-bottom: 2rem;
-      color: white;
-      box-shadow: 0 20px 30px -12px rgba(0,0,0,0.2);
-      text-align: center;
-    }
+        .main-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 40px;
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            padding: 25px 28px 45px 28px;
+        }
 
-    .hero h1 {
-      font-size: 2.2rem;
-      letter-spacing: -0.5px;
-      font-weight: 700;
-    }
+        /* Notes section - original style preserved */
+        .notes-zone {
+            margin-bottom: 40px;
+            background: #fefcf5;
+            border-radius: 28px;
+            padding: 5px 0;
+        }
 
-    .hero h1 small {
-      font-size: 1.2rem;
-      font-weight: 400;
-      display: block;
-      opacity: 0.9;
-      margin-top: 0.5rem;
-    }
+        /* Questions grid */
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
+        }
 
-    .lang-badge {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 1rem;
-    }
+        .quiz-card {
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s ease;
+            border: 1px solid #e4edfa;
+            overflow: hidden;
+        }
 
-    .lang-badge span {
-      background: rgba(255,255,240,0.2);
-      backdrop-filter: blur(5px);
-      padding: 0.4rem 1rem;
-      border-radius: 40px;
-      font-weight: 500;
-    }
+        .quiz-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 24px -8px rgba(0, 79, 158, 0.12);
+            border-color: #c9ddfa;
+        }
 
-    .card {
-      background: white;
-      border-radius: 1.5rem;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-      transition: all 0.2s;
-    }
+        .question-header {
+            background: #fafdff;
+            padding: 20px 20px 14px 20px;
+            border-bottom: 1px solid #eef2f8;
+        }
 
-    .card h2 {
-      font-size: 1.7rem;
-      border-left: 6px solid #2c7da0;
-      padding-left: 1rem;
-      margin-bottom: 1.2rem;
-      color: #0f4c5f;
-    }
+        .question-text {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #0b3b5f;
+            line-height: 1.45;
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
 
-    .grid-questions {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 1rem;
-    }
+        .q-num {
+            background: #1e6f5c;
+            color: white;
+            border-radius: 60px;
+            padding: 3px 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
 
-    .qa-item {
-      background: #fefcf5;
-      border-radius: 1rem;
-      padding: 0.8rem 1rem;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-      transition: 0.1s;
-      cursor: pointer;
-    }
+        .q-body {
+            color: #2c3e66;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 10px;
+            padding-left: 10px;
+            border-left: 2px solid #8fc1e0;
+        }
 
-    .qa-item:hover {
-      background: #fdf6e3;
-      transform: translateY(-2px);
-    }
+        /* Answer area - hidden until click */
+        .answer-area {
+            padding: 12px 20px 22px 20px;
+            background: #ffffff;
+        }
 
-    .qa-question {
-      font-weight: 700;
-      color: #1f6392;
-      font-size: 1rem;
-    }
+        .reveal-btn {
+            background: linear-gradient(100deg, #1f4a7c, #0f3b5f);
+            border: none;
+            width: 100%;
+            padding: 12px 12px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            font-family: inherit;
+        }
 
-    .qa-answer {
-      margin-top: 0.4rem;
-      background: #eef2f5;
-      padding: 0.3rem 0.8rem;
-      border-radius: 1rem;
-      display: inline-block;
-      font-weight: 500;
-    }
+        .reveal-btn:hover {
+            background: linear-gradient(100deg, #143654, #0a2c46);
+            transform: scale(0.97);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
 
-    .hidden-answer {
-      display: none;
-    }
+        /* Jibu tupu - hakuna maelezo yoyote, namba tu */
+        .hidden-answer {
+            margin-top: 14px;
+            background: #e8f5e9;
+            border-radius: 20px;
+            padding: 14px 18px;
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #1b5e20;
+            border-left: 5px solid #2e7d32;
+            display: none;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
 
-    .answer-revealed {
-      display: inline-block;
-      animation: fadeIn 0.3s ease-in;
-    }
+        .hidden-answer.show {
+            display: block;
+            animation: fadePop 0.2s ease-out;
+        }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-5px);}
-      to { opacity: 1; transform: translateY(0);}
-    }
+        @keyframes fadePop {
+            0% {
+                opacity: 0;
+                transform: translateY(-6px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    .reveal-btn {
-      background: #2c7da0;
-      color: white;
-      border: none;
-      padding: 0.2rem 0.8rem;
-      border-radius: 1rem;
-      font-size: 0.7rem;
-      cursor: pointer;
-      margin-left: 0.5rem;
-      transition: 0.1s;
-    }
+        footer {
+            text-align: center;
+            margin-top: 45px;
+            padding-top: 20px;
+            border-top: 2px solid #e2edf7;
+            color: #5f7f9e;
+            font-size: 0.8rem;
+        }
 
-    .reveal-btn:hover {
-      background: #1f6392;
-    }
+        h2.main-title {
+            font-size: 28px;
+            background: linear-gradient(135deg, #1c5d6e, #1f7a5a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+        }
 
-    .sw-translation {
-      font-size: 0.8rem;
-      color: #6c8d9c;
-      margin-top: 0.2rem;
-      font-style: italic;
-    }
+        /* sound toggle small indicator (optional) */
+        .sound-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f0f4f9;
+            border-radius: 60px;
+            padding: 4px 14px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #2c5a73;
+            margin-left: 16px;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .sound-status:hover {
+            background: #e2eaf1;
+        }
 
+        @media (max-width: 750px) {
+            .main-wrapper {
+                padding: 16px;
+            }
+            .hidden-answer {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="main-wrapper">
+    <!-- NOTES SECTION (HAIJABADILISHWA) -->
+    <div class="notes-zone">
+        <section id="approximation-notes" style="margin: 0 auto; padding: 0px; max-width: 100%; background: transparent; border-radius: 20px; font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.8;">
+            <h2 style="text-align: center; color: #0f172a; font-size: 30px; margin-bottom: 20px;">
+                📘 Meaning of Approximation <br>
+                <span style="color: #2563eb; font-size: 22px;">Maana ya Approximation</span>
+            </h2>
+            <div style="background: #eff6ff; padding: 18px; border-left: 6px solid #2563eb; border-radius: 12px; margin-bottom: 20px;">
+                <p style="font-size: 18px; color: #1e3a8a; margin: 0;">
+                    <strong>Approximation</strong> is a process of finding a number that is closest to the exact value. <br>
+                    <span style="color: #334155;">Approximation ni njia ya kupata namba iliyo karibu zaidi na thamani halisi.</span>
+                </p>
+            </div>
+            <div style="background: #f8fafc; padding: 18px; border-left: 6px solid #0ea5e9; border-radius: 12px; margin-bottom: 20px;">
+                <p style="font-size: 18px; color: #0f172a; margin: 0;">
+                    It involves expressing a number into a higher or lower value which is close to the exact value. <br>
+                    <span style="color: #475569;">Inahusisha kuandika namba kwa thamani ya juu au ya chini ambayo iko karibu na thamani halisi.</span>
+                </p>
+            </div>
+            <div style="background: #f0fdf4; padding: 18px; border-left: 6px solid #16a34a; border-radius: 12px; margin-bottom: 20px;">
+                <p style="font-size: 18px; color: #166534; margin: 0;">
+                    Approximation can also be called <strong>Estimation</strong> and is represented by the symbol <strong>≈</strong>. <br>
+                    <span style="color: #334155;">Approximation pia huitwa <strong>Estimation</strong> na huonyeshwa kwa alama <strong>≈</strong>.</span>
+                </p>
+            </div>
+            <div style="background: #fff7ed; padding: 18px; border-left: 6px solid #f97316; border-radius: 12px; margin-bottom: 20px;">
+                <p style="font-size: 18px; color: #9a3412; margin: 0;">
+                    We do approximation by <strong>rounding off numbers</strong>. <br>
+                    <span style="color: #444;">Tunafanya approximation kwa <strong>ku-round off namba</strong>.</span>
+                </p>
+            </div>
+            <div style="background: #fefce8; padding: 18px; border-left: 6px solid #eab308; border-radius: 12px;">
+                <p style="font-size: 18px; color: #854d0e; margin: 0;">
+                    Example: <strong>47 ≈ 50</strong> <br>
+                    <span style="color: #444;">Mfano: <strong>47 ≈ 50</strong>, kwa sababu 50 ndiyo karibu zaidi.</span>
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Header yenye sound toggle -->
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 8px;">
+        <div>
+            <h2 class="main-title" style="font-size: 28px; margin-bottom: 0;">📝 Maswali 20 ya Approximation</h2>
+        </div>
+        <div id="soundToggleBtn" class="sound-status" style="cursor: pointer;">
+            <span>🔊</span> <span id="soundToggleText">Sauti IMEWASHWA</span>
+        </div>
+    </div>
+    <p style="color: #2c5a73; margin-bottom: 20px; background: #eef6fc; padding: 8px 16px; border-radius: 60px; display: inline-block;">
+        🔐 Bonyeza "Onyesha Jibu" - utaona <strong>JIBU TUPU</strong> + utasikia sauti (click sound)
+    </p>
+
+    <div class="questions-grid" id="questionsContainer"></div>
+    
+    <footer>
+        ⚡ Jibu linafichwa kabisa mpaka ubonyeze. Kila unapofungua jibu, sauti itacheza (kama kengele fupi). Unaweza kuzima sauti kwa kubonyeza kitufe cha juu.
+    </footer>
+</div>
+
+<script>
+    // -------------------- SOUND EFFECTS SETUP --------------------
+    // Create a simple Web Audio context or use simple Audio() with base64 beep? 
+    // To ensure cross-browser and avoid external files, we'll generate a short "pop/ding" using Web Audio API
+    // Also we provide a toggle to enable/disable sound
+    
+    let soundEnabled = true;
+    let audioCtx = null;
+    
+    // Function to initialize audio context (lazy init on first user interaction to comply with browser policies)
+    function initAudioContext() {
+        if (audioCtx !== null) return audioCtx;
+        try {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            return audioCtx;
+        } catch (e) {
+            console.warn("Web Audio not supported");
+            return null;
+        }
+    }
+    
+    // Play a short "click/pop" sound (pleasant notification)
+    function playRevealSound() {
+        if (!soundEnabled) return;
+        try {
+            let ctx = initAudioContext();
+            if (!ctx) return;
+            // Resume context if suspended (browsers require user interaction to start)
+            if (ctx.state === 'suspended') {
+                ctx.resume().then(() => {
+                    playBeep(ctx);
+                }).catch(e => console.log("Audio resume error", e));
+            } else {
+                playBeep(ctx);
+            }
+        } catch(e) {
+            // fallback: no sound, silent fail
+        }
+    }
+    
+    function playBeep(ctx) {
+        try {
+            const now = ctx.currentTime;
+            const oscillator = ctx.createOscillator();
+            const gainNode = ctx.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(ctx.destination);
+            oscillator.type = 'sine';
+            oscillator.frequency.value = 880; // high note A5
+            gainNode.gain.value = 0.2;
+            gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.35);
+            oscillator.start(now);
+            oscillator.stop(now + 0.25);
+        } catch(e) { /* fail silently */ }
+    }
+    
+    // Alternative for browsers that might block WebAudio? but it's fine, user click will resume.
+    // Also add a fallback: if we get "AudioContext not allowed", we just ignore.
+    
+    // Toggle sound UI
+    const toggleBtn = document.getElementById('soundToggleBtn');
+    const soundToggleText = document.getElementById('soundToggleText');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            soundEnabled = !soundEnabled;
+            if (soundEnabled) {
+                soundToggleText.innerText = 'Sauti IMEWASHWA';
+                toggleBtn.style.background = "#e8f0e6";
+                // Pre-heat audio context on re-enabling? optional
+            } else {
+                soundToggleText.innerText = 'Sauti IMEZIMWA';
+                toggleBtn.style.background = "#f0e6e6";
+            }
+        });
+    }
+    
+    // -------------------- QUESTIONS & ANSWERS (JIBU TUPU) --------------------
+    const questionsList = [
+        { text: "Round off 73 to the nearest ten", answer: "70" },
+        { text: "Round off 268 to the nearest hundred", answer: "300" },
+        { text: "Approximate 5.78 to one decimal place", answer: "5.8" },
+        { text: "Approximate 1,249 to the nearest thousand", answer: "1000" },
+        { text: "Estimate 48 × 12 by rounding each to nearest ten", answer: "500" },
+        { text: "Round 0.0473 to two decimal places", answer: "0.05" },
+        { text: "Approximate 399 to the nearest hundred", answer: "400" },
+        { text: "Round off 7,982 to the nearest thousand", answer: "8000" },
+        { text: "Estimate 29 + 54 + 38 by rounding to nearest ten", answer: "120" },
+        { text: "Approximate 15.249 to one decimal place", answer: "15.2" },
+        { text: "Round 6,384 to the nearest hundred", answer: "6400" },
+        { text: "Approximate 94.56 to the nearest whole number", answer: "95" },
+        { text: "Estimate 820 - 487 by rounding to nearest hundred", answer: "300" },
+        { text: "Round off 0.999 to one decimal place", answer: "1.0" },
+        { text: "Approximate 12,876 to the nearest thousand", answer: "13000" },
+        { text: "Round 56.273 to two decimal places", answer: "56.27" },
+        { text: "Estimate 74 × 29 by rounding each to nearest ten", answer: "2100" },
+        { text: "Round 3.14159 to three decimal places", answer: "3.142" },
+        { text: "Estimate 499 + 212 + 98 by rounding to nearest hundred", answer: "800" },
+        { text: "Round off 2,049 to the nearest hundred", answer: "2000" }
+    ];
+
+    function renderQuestionsWithSound() {
+        const container = document.getElementById('questionsContainer');
+        if (!container) return;
+        container.innerHTML = '';
+
+        questionsList.forEach((q, index) => {
+            // Create card
+            const card = document.createElement('div');
+            card.className = 'quiz-card';
+
+            // Header with question
+            const header = document.createElement('div');
+            header.className = 'question-header';
+
+            const qTextDiv = document.createElement('div');
+            qTextDiv.className = 'question-text';
+            
+            const numBadge = document.createElement('span');
+            numBadge.className = 'q-num';
+            numBadge.innerText = `${index + 1}`;
+            
+            const questionSpan = document.createElement('span');
+            questionSpan.style.fontWeight = "600";
+            questionSpan.style.color = "#0c4a6e";
+            questionSpan.innerText = q.text;
+            
+            qTextDiv.appendChild(numBadge);
+            qTextDiv.appendChild(questionSpan);
+            
+            const hintSpan = document.createElement('div');
+            hintSpan.className = 'q-body';
+            hintSpan.innerText = '📌 Bonyeza kitufe hapo chini kuona jibu + sauti.';
+            
+            header.appendChild(qTextDiv);
+            header.appendChild(hintSpan);
+            
+            // Answer area with hidden answer
+            const answerAreaDiv = document.createElement('div');
+            answerAreaDiv.className = 'answer-area';
+            
+            const revealButton = document.createElement('button');
+            revealButton.className = 'reveal-btn';
+            revealButton.innerHTML = `<span>🔓 Onyesha Jibu</span><span>👇</span>`;
+            
+            // Hidden answer div - ONLY the answer (no extra text)
+            const answerHiddenDiv = document.createElement('div');
+            answerHiddenDiv.className = 'hidden-answer';
+            answerHiddenDiv.innerHTML = `${q.answer}`;
+            
+            let isRevealed = false;
+            revealButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (!isRevealed) {
+                    // PLAY SOUND EFFECT before or after showing answer
+                    playRevealSound();    // sauti inachezwa wakati wa kufungua jibu
+                    
+                    answerHiddenDiv.classList.add('show');
+                    isRevealed = true;
+                    revealButton.style.background = "linear-gradient(100deg, #2a6b4e, #1f5a41)";
+                    revealButton.innerHTML = `<span>✅ Jibu limefunuliwa</span><span>📖</span>`;
+                } else {
+                    // if already revealed, we can still play sound if needed? Optional but better not to spam?
+                    // Wala tusipige sauti tena — we only play when answer is first revealed.
+                    // but if someone clicks again we do nothing extra.
+                    if (!answerHiddenDiv.classList.contains('show')) {
+                        // just safety
+                        answerHiddenDiv.classList.add('show');
+                        playRevealSound();
+                    }
+                }
+            });
+            
+            answerAreaDiv.appendChild(revealButton);
+            answerAreaDiv.appendChild(answerHiddenDiv);
+            
+            card.appendChild(header);
+            card.appendChild(answerAreaDiv);
+            container.appendChild(card);
+        });
+    }
+    
+    renderQuestionsWithSound();
+    
+    // Pre-warm audio context on first user click anywhere? to avoid strict autoplay policies
+    // Buttons will trigger sound on click and AudioContext will be resumed inside playRevealSound.
+    // However some browsers require user interaction before AudioContext can start.
+    // We'll attach a one-time global click listener to resume audio context as soon as possible.
+    let audioInitialized = false;
+    function warmupAudioOnFirstClick() {
+        if (audioInitialized) return;
+        try {
+            const ctx = initAudioContext();
+            if (ctx && ctx.state === 'suspended') {
+                ctx.resume().then(() => {
+                    console.log("AudioContext resumed globally");
+                }).catch(e=>null);
+            }
+        } catch(e) {}
+        audioInitialized = true;
+    }
+    document.body.addEventListener('click', function once() {
+        warmupAudioOnFirstClick();
+    }, { once: true });
+    
+    // Also, in case the sound toggle is clicked we can warmup too.
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', function warm() {
+            if (!audioInitialized) {
+                const ctx = initAudioContext();
+                if (ctx && ctx.state === 'suspended') ctx.resume();
+                audioInitialized = true;
+            }
+        });
+    }
+    
+    // Additional note: The sound effect is crisp and short, student will hear a "ding" each time they reveal a new answer.
+    // Sound can be turned off via top toggle. The toggle state is remembered only per session.
+    // User experience is exactly as requested: answer revealed with click + sound.
+</script>
+</body>
+</html>
     .quiz-area {
       background: #fff9ef;
       border-radius: 2rem;
